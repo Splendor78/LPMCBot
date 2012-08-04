@@ -77,6 +77,12 @@ def parsemsg(info, msg, sender):
         if cmd[0] == '!die' and sender in ADMINS:
             ret = 'QUIT\n'
 
+# The '!setrules' command adds the input to the !rules command (admin command)
+        if cmd[0] == '!setrules' and sender in ADMINS:
+            global rules_string
+            rules_string = str(cmd[1])
+            ret = 'PRIVMSG ' + info[2] + ' :Rules Set\n'
+
 # The '!add_admin' command adds an admin
         if cmd[0] == "!add_admin" and sender in ADMINS:
             try:
@@ -286,6 +292,18 @@ def parsemsg(info, msg, sender):
             str(hours_passed) + ' hours ' + \
             str(minutes_passed) + ' minutes and ' + \
             str(seconds_passed) + ' seconds.' + '\n'
+
+# The '!rules' command outputs the channel rules set by an admin user
+        if cmd[0] == '!rules':
+            try:
+                ret = 'PRIVMSG ' + info[2] + ' :' + rules_string + '\n'
+            except:
+                ret = 'PRIVMSG ' + info[2] + ' :No Rules. It\'s ' + \
+                'like the Wild West up in here.\n'
+
+# The !source command links the user to the github repository
+        if cmd[0] == '!source':
+            ret = 'PRIVMSG ' + info[2] + ' :' + 'http://bit.ly/LPMCBot' + '\n'
 
     # The following shall look for websites posted in chat. It will then
     # obtain the Title of the page and return a message to the user to be sent
